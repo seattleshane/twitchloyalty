@@ -1,0 +1,14 @@
+
+<table style="width:100%">
+  <tr>
+    <th>Viewer</th>
+    <th>View Count</th> 
+  </tr>
+
+{%for viewer in leaderboard %}
+<tr>
+<td>{{viewer[0]}}</td>
+<td>{{viewer[1]}}</td>
+</tr>
+{% endfor %}
+</table>
