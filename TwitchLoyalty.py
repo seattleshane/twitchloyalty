@@ -1,14 +1,16 @@
+
 from collections import Counter
 import requests
 import json
 import sqlite3
+import settings
 
 # This sets up the SQLite and creates a cursor which creates, edits and stores values
 class getCur():
 	con = None
 	cur = None
 	def __enter__(self):
-		self.con = sqlite3.connect('viewersqlite')
+		self.con = sqlite3.connect(settings.DBFILE)
 		self.cur = self.con.cursor()
 		self.cur.execute("PRAGMA foreign_keys = 1;")
 		return self.cur
@@ -29,14 +31,14 @@ def createTables():
 def currentViewers(viewers):
 	with getCur() as cur:
 		cur.execute("DELETE FROM CurrentViewers;")
-		for viewer in viewers:	
+		for viewer in viewers:
 			cur.execute("INSERT INTO CurrentViewers VALUES(?);",(viewer,))
 
 
 def incrementViewer(viewer):
 	with getCur() as cur:
 		cur.execute("SELECT EXISTS(SELECT * FROM Viewers  WHERE Username = ?)",(viewer,))
-		if cur.fetchone() == 0:
+		if cur.fetchone()[0] == 0:
 			cur.execute("INSERT INTO Viewers VALUES (?,1);",(viewer,))
 		else:
 			cur.execute("UPDATE Viewers SET ViewCount = ViewCount + 1 WHERE Username = ?;",(viewer,))
@@ -50,7 +52,7 @@ def currentlyViewing(viewer):
 
 def getViewers():
 	print('Beginning file download with requests')
-	url ='https://tmi.twitch.tv/group/user/callistergamingtv/chatters'
+	url ='https://tmi.twitch.tv/group/user/' + settings.TWITCHCHANNEL + '/chatters'
 	r = requests.get(url)
 	tmp = json.loads(r.content.decode('ascii'))
 	return tmp["chatters"]["viewers"]
