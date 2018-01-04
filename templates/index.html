@@ -1,14 +1,24 @@
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<title>"CallisterGaming Viewer Interaction"</title>
+</head>
 
+<table class="table table-dark">
 <table style="width:100%">
+<thead>
   <tr>
-    <th>Viewer</th>
-    <th>View Count</th> 
+    <th scope="col">Viewer</th>
+    <th scope="col">View Count</th> 
+	<th scope="col">Last Login</th>
   </tr>
-
+</thead>
+<tbody>
 {%for viewer in leaderboard %}
 <tr>
 <td>{{viewer[0]}}</td>
 <td>{{viewer[1]}}</td>
+<td>{{viewer[2]}}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table>
